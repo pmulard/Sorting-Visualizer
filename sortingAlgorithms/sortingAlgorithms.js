@@ -1,22 +1,8 @@
 // Merge Sort
 export const mergeSort = (array) => {
-    tempArray = []
-    mergeSortDivide(array, tempArray, 0, array.length-1)
+    tempArray = array.slice()
+    mergeSortDivide(tempArray)
 }
-
-// const mergeSortDivide = (array, tempArray, first=0, last=array.length-1) => {
-//     if (first < last) {
-//         mid = (first+last) / 2
-//         mergeSortDivide(array, tempArray, first, mid)
-//         mergeSortDivide(array, tempArray, mid+1, last)
-
-//         // Doesn't need to divide if there are two elements left. (first <)
-//         if (array[mid] === array[mid+1]) { 
-//             mergeSortMerge(array, tempArray, first, mid, last)
-//         }
-//     }
-// }
-
 
 const mergeSortDivide = (array) => {
     if (array.length < 2) {
