@@ -43,7 +43,7 @@ export const insertionSortSwap = (array, i) => {
 export const shellSort = (array) => { 
     let space = Math.floor(array.length/2)
     while (space > 0) {
-        if (space % 2 === 0) { // Improves efficiency by assuring odd space
+        if (space % 2 === 0) { // Improves efficiency by assuring space is odd
             space += 1
         }
         for (let i=0; i < space; i++) {
@@ -70,30 +70,24 @@ export const shellSortIncrementSort = (array, space, first, last) => {
 
 // MERGE SORT
 export const mergeSort = (array) => {
-    let tempArray = array.slice()
-    return mergeSortDivide(tempArray)
-}
-
-export const mergeSortDivide = (array) => {
     if (array.length < 2) {
         return array
     }
+    var mid = Math.floor(array.length/2)
+    var left = mergeSort(array.slice(0, mid))
+    var right = mergeSort(array.slice(mid)) 
 
-    const mid = Math.floor(array.length/2)
-    const left = array.slice(0, mid)
-    const right = array.slice(mid)
-
-    return mergeSortMerge(mergeSortDivide(left), mergeSortDivide(right))
+    return mergeSortMerge(left, right)
 }
 
 export const mergeSortMerge = (left, right) => {
-    let sortedArray = []
-    while (left.length && right.length) {
+    var sortedArray = []
+    while (left.length > 0 && right.length > 0) {
         if (left[0] < right[0]) {
             sortedArray.push(left.shift())
         } else {
             sortedArray.push(right.shift())
         }
     }
-    return sortedArray
+    return sortedArray.concat(left.length ? left : right)
 }

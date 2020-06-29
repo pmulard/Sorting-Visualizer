@@ -41,7 +41,7 @@ export default class SortingVisualizer extends React.Component {
         const sortedArray = sortingAlgorithms.insertionSort(arrayCopy2)
         console.log(this.compareSorts(arrayCopy1, sortedArray))
     }
-    shell() {
+    shellSort() {
         let arrayCopy1 = JSON.parse(JSON.stringify(this.state.array))
         let arrayCopy2 = JSON.parse(JSON.stringify(this.state.array))
             arrayCopy1.sort((a,b) => a-b)
@@ -54,6 +54,7 @@ export default class SortingVisualizer extends React.Component {
             arrayCopy1.sort((a,b) => a-b)
         const sortedArray = sortingAlgorithms.mergeSort(arrayCopy2)
         console.log(this.compareSorts(arrayCopy1, sortedArray))
+        console.log(this.printArrays(sortedArray, []))
     }
     quickSort() {}
     compareSorts(array1, array2) {
