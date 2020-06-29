@@ -22,7 +22,24 @@ const selectionSortSwap = (array, j) => {
 
 
 
+// INSERTION SORT
+export const insertionSort = (array, i=1) => {
+    if (i >= array.length) {
+        return array
+    }
+    insertionSortSwap(array, i)
+    return insertionSort(array, i+1)
+}
 
+const insertionSortSwap = (array, i) => {
+    unsortedElement = array[i]
+    index = i-1
+    while (index >= 0 && unsortedElement < array[index]) {
+        array[index+1] = array[index]
+        index -= 1
+    }
+    array[index+1] = unsortedElement
+}
 
 
 
