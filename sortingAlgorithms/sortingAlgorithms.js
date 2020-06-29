@@ -1,7 +1,35 @@
-// Merge Sort
+// SELECTION SORT
+export const selectionSort = (array, i=0) => {
+    if (i+1 >= array.length) {
+        return array
+    }
+    selectionSortSwap(array, i+1)
+    return selectionSort(array, i+1)
+}
+
+const selectionSortSwap = (array, j) => {
+    baseIndex = j-1
+    minIndex = baseIndex
+    for (j; j < array.length; j++) {
+        if (array[j] < array[minIndex]) {
+            minIndex = j
+        }
+    }
+    temp = array[baseIndex]
+    array[baseIndex] = array[minIndex]
+    array[minIndex] = array[temp]
+}
+
+
+
+
+
+
+
+// MERGE SORT
 export const mergeSort = (array) => {
     tempArray = array.slice()
-    mergeSortDivide(tempArray)
+    return mergeSortDivide(tempArray)
 }
 
 const mergeSortDivide = (array) => {
