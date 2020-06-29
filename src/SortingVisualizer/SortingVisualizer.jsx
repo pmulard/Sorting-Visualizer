@@ -23,16 +23,48 @@ export default class SortingVisualizer extends React.Component {
         this.setState({array});
     }
 
+    // Sorting Algorithms
+
+    selectionSort() {
+
+    }
+
+    insertionSort() {
+
+    }
+
+    shell() {
+
+    }
+
+    mergeSort() {
+
+    }
+
+    quickSort() {
+
+    }
+
     render() {
         const {array} = this.state;
 
         return (
-            <div className="array-bar-container">
-                {array.map((element, index) => (
-                    <div className="array-bar" key={index} 
-                        style={{height: `${element}px`}}>
-                    </div>
-                ))}
+            <div className="app-container">
+                <div className="array-bar-container">
+                    {array.map((element, index) => (
+                        <div className="array-bar" key={index} 
+                            style={{height: `${element}px`}}>
+                        </div>
+                    ))}
+                </div>
+                <div className="buttons-container">
+                    <button onClick={() => this.resetArray()}>Generate New Array</button>
+                    <button onClick={() => this.selectionSort()}>Selection Sort</button>
+                    <button onClick={() => this.insertionSort()}>Insertion Sort</button>
+                    <button onClick={() => this.shellSort()}>Shell Sort</button>
+                    <button onClick={() => this.mergeSort()}>Merge Sort</button>
+                    <button onClick={() => this.quickSort()}>Quick Sort</button>
+                </div>
             </div>
         );
     }

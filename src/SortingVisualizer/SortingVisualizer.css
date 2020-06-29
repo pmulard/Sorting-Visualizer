@@ -1,7 +1,10 @@
+.app-container {
+    position: absolute;
+    left: 20%;
+}
+
 .array-bar-container {
     background-color: white;
-    position: absolute;
-    left: 100px;
 }
 
 .array-bar {
