@@ -1,23 +1,19 @@
 // SELECTION SORT
-export const selectionSort = (array, i=0) => {
-    if (i+1 >= array.length) {
-        return array
-    }
-    selectionSortSwap(array, i+1)
-    return selectionSort(array, i+1)
-}
-
-const selectionSortSwap = (array, j) => {
-    baseIndex = j-1
-    minIndex = baseIndex
-    for (j; j < array.length; j++) {
-        if (array[j] < array[minIndex]) {
-            minIndex = j
+export const selectionSort = (array) => {
+    for (let i=0; i < array.length; i++) {
+        let min = i;
+        for (let j = i+1; j < array.length; j++) {
+            if (array[min] > array[j]) {
+                min = j;
+            }
+        }
+        if (min !== i) {
+            let tmp = array[i];
+            array[i] = array[min];
+            array[min] = tmp;
         }
     }
-    temp = array[baseIndex]
-    array[baseIndex] = array[minIndex]
-    array[minIndex] = array[temp]
+    return array
 }
 
 
@@ -31,9 +27,9 @@ export const insertionSort = (array, i=1) => {
     return insertionSort(array, i+1)
 }
 
-const insertionSortSwap = (array, i) => {
-    unsortedElement = array[i]
-    index = i-1
+export const insertionSortSwap = (array, i) => {
+    let unsortedElement = array[i]
+    let index = i-1
     while (index >= 0 && unsortedElement < array[index]) {
         array[index+1] = array[index]
         index -= 1
@@ -45,12 +41,12 @@ const insertionSortSwap = (array, i) => {
 
 // SHELL SORT
 export const shellSort = (array) => { 
-    space = Math.floor(array.length/2)
+    let space = Math.floor(array.length/2)
     while (space > 0) {
         if (space % 2 === 0) { // Improves efficiency by assuring odd space
             space += 1
         }
-        for (i=0; i < space; i++) {
+        for (let i=0; i < space; i++) {
             shellSortIncrementSort(array, space, i, array.length-1)
         }
         space = Math.floor(space/2)
@@ -58,10 +54,10 @@ export const shellSort = (array) => {
     return array
 }
 
-const shellSortIncrementSort = (array, space, first, last) => {
-    for (j = first+space; j <= last; j+=space) {
-        unsortedElement = array[j]
-        index = j-space
+export const shellSortIncrementSort = (array, space, first, last) => {
+    for (let j = first+space; j <= last; j+=space) {
+        let unsortedElement = array[j]
+        let index = j-space
         while (index >= 0 && unsortedElement < array[index]) {
             array[index+space] = array[index]
             index -= space
@@ -74,11 +70,11 @@ const shellSortIncrementSort = (array, space, first, last) => {
 
 // MERGE SORT
 export const mergeSort = (array) => {
-    tempArray = array.slice()
+    let tempArray = array.slice()
     return mergeSortDivide(tempArray)
 }
 
-const mergeSortDivide = (array) => {
+export const mergeSortDivide = (array) => {
     if (array.length < 2) {
         return array
     }
@@ -90,8 +86,8 @@ const mergeSortDivide = (array) => {
     return mergeSortMerge(mergeSortDivide(left), mergeSortDivide(right))
 }
 
-const mergeSortMerge = (left, right) => {
-    sortedArray = []
+export const mergeSortMerge = (left, right) => {
+    let sortedArray = []
     while (left.length && right.length) {
         if (left[0] < right[0]) {
             sortedArray.push(left.shift())
