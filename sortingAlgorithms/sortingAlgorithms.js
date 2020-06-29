@@ -43,6 +43,35 @@ const insertionSortSwap = (array, i) => {
 
 
 
+// SHELL SORT
+export const shellSort = (array) => { 
+    space = Math.floor(array.length/2)
+    while (space > 0) {
+        if (space % 2 === 0) { // Improves efficiency by assuring odd space
+            space += 1
+        }
+        for (i=0; i < space; i++) {
+            shellSortIncrementSort(array, space, i, array.length-1)
+        }
+        space = Math.floor(space/2)
+    }
+    return array
+}
+
+const shellSortIncrementSort = (array, space, first, last) => {
+    for (j = first+space; j <= last; j+=space) {
+        unsortedElement = array[j]
+        index = j-space
+        while (index >= 0 && unsortedElement < array[index]) {
+            array[index+space] = array[index]
+            index -= space
+        }
+        array[index+space] = unsortedElement
+    }
+}
+
+
+
 // MERGE SORT
 export const mergeSort = (array) => {
     tempArray = array.slice()
