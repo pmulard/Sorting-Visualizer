@@ -1,4 +1,5 @@
 import React from 'react';
+import * as sortingAlgorithms from '../sortingAlgorithms/sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 export default class SortingVisualizer extends React.Component {
@@ -26,7 +27,7 @@ export default class SortingVisualizer extends React.Component {
     // Sorting Algorithms
 
     selectionSort() {
-
+        const sortedArray = sortingAlgorithms.selectionSort(this.state.array)
     }
 
     insertionSort() {
