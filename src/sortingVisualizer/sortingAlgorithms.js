@@ -3,7 +3,7 @@ var defaultColor = 'orange'
 
 // SELECTION SORT
 export const selectionSort = (array) => {   
-    const animations = [];
+    var animations = [];
 
     for (let i=0; i < array.length; i++) {
         let min = i;
@@ -46,29 +46,15 @@ export const insertionSort = (array, i=1) => {
             animations.push([index, index+1, defaultColor])
             index -= 1;
         }
-
+        
         array[index+1] = unsortedElement;
+        // Changes the height of the last bar in iteration to reflect
+        // unsorted element being put in it's correct place
+        animations.push([index+1, array[index+1]])
     }
+    console.log(array.toString())
     return animations;
 }
-
-// export const insertionSortSwap = (array, i) => {
-//     let unsortedElement = array[i];
-//     let index = i-1;
-//     while (index >= 0 && unsortedElement < array[index]) {
-//         array[index+1] = array[index];
-//         // Changes color and values for bars as they shift up
-//         animations.push(['posSwap', index, array[index], index+1, array[index+1]])
-//         animations.push(['colorOff', index, index+1])
-//         index -= 1;
-//     }
-
-//     animations.push([i, index+1, compareColor]); // Turns on color for bars to be compared
-//     animations.push([i, array[i], min, array[min]]); // Swaps height (values) of bars
-//     animations.push([i, min, defaultColor]); // Resets bars back to default color
-
-//     array[index+1] = unsortedElement;
-// }
 
 
 

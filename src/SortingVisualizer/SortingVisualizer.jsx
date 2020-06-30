@@ -3,7 +3,7 @@ import * as sortingAlgorithms from './sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 // Controls the speed of the animations
-const SPEED_MS = 20;
+const SPEED_MS = 70;
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -11,7 +11,6 @@ export default class SortingVisualizer extends React.Component {
 
         this.state = {
             array: [],
-            animations: []
         };
     }
 
@@ -23,18 +22,17 @@ export default class SortingVisualizer extends React.Component {
     resetArray() {
         const array = [];
         for (let i=0; i < 100; i++) {
-            array.push(getRandomInt(5,500));
+            array.push(getRandomInt(5, 300));
         }
-        const animations = [];
         this.setState({array});
-        this.setState({animations});
+
     }
 
 
 
     // Sorting Algorithms
     selectionSort() {
-        const animations = sortingAlgorithms.selectionSort(this.state.array);
+        let animations = sortingAlgorithms.selectionSort(this.state.array);
         for (let i=0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
             const isColorChange = i%3 !== 1;
@@ -53,16 +51,17 @@ export default class SortingVisualizer extends React.Component {
                     const barTwoStyle = arrayBars[barTwoIndex].style;
                     barOneStyle.height = `${barTwoValue}px`;
                     barTwoStyle.height = `${barOneValue}px`;
-                }, i/100000000);
+                }, i*SPEED_MS);
             }
         }
     }
     insertionSort() {
-        const animations = sortingAlgorithms.insertionSort(this.state.array);
+        let animations = sortingAlgorithms.insertionSort(this.state.array);
         for (let i=0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
-            const isPosSwapOn = i%2 === 0;
-            if (isPosSwapOn) {
+            const animationsLen = animations[i].length;
+            if (animationsLen === 5) {
+                // Changes color and values for bars as they shift up
                 const [barOneIndex, barOneValue, barTwoIndex, barTwoValue, color] = animations[i];
                 const barOneStyle = arrayBars[barOneIndex].style;
                 const barTwoStyle = arrayBars[barTwoIndex].style;
@@ -71,15 +70,24 @@ export default class SortingVisualizer extends React.Component {
                     barOneStyle.height = `${barTwoValue}px`;
                     barTwoStyle.backgroundColor = color;
                     barTwoStyle.height = `${barOneValue}px`;
-                }, i*SPEED_MS);
-            } else {
+                }, i*SPEED_MS/5);
+            } else if (animationsLen === 3) {
+                // Resets color of bars back to default now that swap is completed
                 const [barOneIndex, barTwoIndex, color] = animations[i];
                 const barOneStyle = arrayBars[barOneIndex].style;
                 const barTwoStyle = arrayBars[barTwoIndex].style;
                 setTimeout(() => {
                     barOneStyle.backgroundColor = color;
                     barTwoStyle.backgroundColor = color;
-                }, i*SPEED_MS);
+                }, i*SPEED_MS/5);
+            } else { // Assertion: animationsLen === 2
+                // Changes the height of the last bar in iteration to reflect
+                // unsorted element being put in it's correct place
+                const [finalBarIndex, finalBarValue] = animations[i];
+                const finalBarStyle = arrayBars[finalBarIndex].style;
+                setTimeout(() => {
+                    finalBarStyle.height = `${finalBarValue}px`;
+                }, i*SPEED_MS/5);
             }
         }
     }
