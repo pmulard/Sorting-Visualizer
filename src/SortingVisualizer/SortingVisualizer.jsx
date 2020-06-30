@@ -11,6 +11,7 @@ export default class SortingVisualizer extends React.Component {
 
         this.state = {
             array: [],
+            animations: []
         };
     }
 
@@ -21,10 +22,12 @@ export default class SortingVisualizer extends React.Component {
 
     resetArray() {
         const array = [];
-        for (let i=0; i < 200; i++) {
-            array.push(getRandomInt(5,500))
+        for (let i=0; i < 100; i++) {
+            array.push(getRandomInt(5,500));
         }
+        const animations = [];
         this.setState({array});
+        this.setState({animations});
     }
 
 
@@ -36,7 +39,7 @@ export default class SortingVisualizer extends React.Component {
             const arrayBars = document.getElementsByClassName('array-bar');
             const isColorChange = i%3 !== 1;
             if (isColorChange) {
-                const [barOneIndex, barTwoIndex, color] = animations [i];
+                const [barOneIndex, barTwoIndex, color] = animations[i];
                 const barOneStyle = arrayBars[barOneIndex].style;
                 const barTwoStyle = arrayBars[barTwoIndex].style;
                 setTimeout(() => {
@@ -50,16 +53,35 @@ export default class SortingVisualizer extends React.Component {
                     const barTwoStyle = arrayBars[barTwoIndex].style;
                     barOneStyle.height = `${barTwoValue}px`;
                     barTwoStyle.height = `${barOneValue}px`;
-                }, i*SPEED_MS);
+                }, i/100000000);
             }
         }
     }
     insertionSort() {
-        let arrayCopy1 = JSON.parse(JSON.stringify(this.state.array))
-        let arrayCopy2 = JSON.parse(JSON.stringify(this.state.array))
-            arrayCopy1.sort((a,b) => a-b)
-        const sortedArray = sortingAlgorithms.insertionSort(arrayCopy2)
-        console.log(this.compareSorts(arrayCopy1, sortedArray))
+        const animations = sortingAlgorithms.insertionSort(this.state.array);
+        for (let i=0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            const isPosSwapOn = i%2 === 0;
+            if (isPosSwapOn) {
+                const [barOneIndex, barOneValue, barTwoIndex, barTwoValue, color] = animations[i];
+                const barOneStyle = arrayBars[barOneIndex].style;
+                const barTwoStyle = arrayBars[barTwoIndex].style;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = color;
+                    barOneStyle.height = `${barTwoValue}px`;
+                    barTwoStyle.backgroundColor = color;
+                    barTwoStyle.height = `${barOneValue}px`;
+                }, i*SPEED_MS);
+            } else {
+                const [barOneIndex, barTwoIndex, color] = animations[i];
+                const barOneStyle = arrayBars[barOneIndex].style;
+                const barTwoStyle = arrayBars[barTwoIndex].style;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = color;
+                    barTwoStyle.backgroundColor = color;
+                }, i*SPEED_MS);
+            }
+        }
     }
     shellSort() {
         let arrayCopy1 = JSON.parse(JSON.stringify(this.state.array))

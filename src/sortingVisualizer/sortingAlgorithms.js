@@ -1,12 +1,9 @@
 var compareColor = 'aqua';
 var defaultColor = 'orange'
 
-const DELAY_SPEED_MS = 200;
-
 // SELECTION SORT
 export const selectionSort = (array) => {   
     const animations = [];
-    const auxArray = array.splice();
 
     for (let i=0; i < array.length; i++) {
         let min = i;
@@ -18,7 +15,7 @@ export const selectionSort = (array) => {
         }
 
         animations.push([i, min, compareColor]); // Turns on color for bars to be compared
-        animations.push([i, array[i], min, array[min]]) // Swaps height (values) of bars
+        animations.push([i, array[i], min, array[min]]); // Swaps height (values) of bars
         animations.push([i, min, defaultColor]); // Resets bars back to default color
 
         if (min !== i) {
@@ -34,22 +31,44 @@ export const selectionSort = (array) => {
 
 // INSERTION SORT
 export const insertionSort = (array, i=1) => {
-    if (i >= array.length) {
-        return array
+    var animations = [];
+
+    for (let i=1; i < array.length; i++) {
+
+        let unsortedElement = array[i];
+        let index = i-1;
+
+        while (index >= 0 && unsortedElement < array[index]) {
+            array[index+1] = array[index];
+            // Changes color and values for bars as they shift up
+            animations.push([index, array[index], index+1, array[index+1], compareColor])
+            // Resets color of bars back to default now that swap is completed
+            animations.push([index, index+1, defaultColor])
+            index -= 1;
+        }
+
+        array[index+1] = unsortedElement;
     }
-    insertionSortSwap(array, i)
-    return insertionSort(array, i+1)
+    return animations;
 }
 
-export const insertionSortSwap = (array, i) => {
-    let unsortedElement = array[i]
-    let index = i-1
-    while (index >= 0 && unsortedElement < array[index]) {
-        array[index+1] = array[index]
-        index -= 1
-    }
-    array[index+1] = unsortedElement
-}
+// export const insertionSortSwap = (array, i) => {
+//     let unsortedElement = array[i];
+//     let index = i-1;
+//     while (index >= 0 && unsortedElement < array[index]) {
+//         array[index+1] = array[index];
+//         // Changes color and values for bars as they shift up
+//         animations.push(['posSwap', index, array[index], index+1, array[index+1]])
+//         animations.push(['colorOff', index, index+1])
+//         index -= 1;
+//     }
+
+//     animations.push([i, index+1, compareColor]); // Turns on color for bars to be compared
+//     animations.push([i, array[i], min, array[min]]); // Swaps height (values) of bars
+//     animations.push([i, min, defaultColor]); // Resets bars back to default color
+
+//     array[index+1] = unsortedElement;
+// }
 
 
 
