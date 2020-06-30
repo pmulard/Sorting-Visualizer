@@ -1,5 +1,6 @@
 var compareColor = 'aqua';
-var defaultColor = 'orange'
+var defaultColor = 'orange';
+var sortedColor = 'purple';
 
 // SELECTION SORT
 export const selectionSort = (array) => {   
@@ -13,10 +14,12 @@ export const selectionSort = (array) => {
                 min = j;
             }
         }
-
-        animations.push([i, min, compareColor]); // Turns on color for bars to be compared
-        animations.push([i, array[i], min, array[min]]); // Swaps height (values) of bars
-        animations.push([i, min, defaultColor]); // Resets bars back to default color
+        // Turns on color for bars to be compared
+        animations.push([i, min, compareColor]);
+        // Swaps height (values) of bars
+        animations.push([i, array[i], min, array[min]]); 
+        // Resets bars back to default color
+        animations.push([i, min, defaultColor]); 
 
         if (min !== i) {
             let tmp = array[i];
@@ -41,18 +44,17 @@ export const insertionSort = (array, i=1) => {
         while (index >= 0 && unsortedElement < array[index]) {
             array[index+1] = array[index];
             // Changes color and values for bars as they shift up
-            animations.push([index, array[index], index+1, array[index+1], compareColor])
+            animations.push([index, array[index], index+1, array[index+1], compareColor, 'COMPARING'])
             // Resets color of bars back to default now that swap is completed
-            animations.push([index, index+1, defaultColor])
+            animations.push([index, index+1, sortedColor, 'DONE_COMPARING'])
             index -= 1;
         }
         
         array[index+1] = unsortedElement;
         // Changes the height of the last bar in iteration to reflect
         // unsorted element being put in it's correct place
-        animations.push([index+1, array[index+1]])
+        animations.push([index+1, array[index+1], sortedColor,'SORTED'])
     }
-    console.log(array.toString())
     return animations;
 }
 
