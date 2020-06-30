@@ -2,6 +2,9 @@ import React from 'react';
 import * as sortingAlgorithms from './sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
+// Controls the speed of the animations
+const SPEED_MS = 20;
+
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
         super(props)
@@ -18,7 +21,7 @@ export default class SortingVisualizer extends React.Component {
 
     resetArray() {
         const array = [];
-        for (let i=0; i < 20; i++) {
+        for (let i=0; i < 200; i++) {
             array.push(getRandomInt(5,500))
         }
         this.setState({array});
@@ -28,11 +31,28 @@ export default class SortingVisualizer extends React.Component {
 
     // Sorting Algorithms
     selectionSort() {
-        let arrayCopy1 = JSON.parse(JSON.stringify(this.state.array))
-        let arrayCopy2 = JSON.parse(JSON.stringify(this.state.array))
-            arrayCopy1.sort((a,b) => a-b)
-        const sortedArray = sortingAlgorithms.selectionSort(arrayCopy2)
-        console.log(this.compareSorts(arrayCopy1, sortedArray))
+        const animations = sortingAlgorithms.selectionSort(this.state.array);
+        for (let i=0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            const isColorChange = i%3 !== 1;
+            if (isColorChange) {
+                const [barOneIndex, barTwoIndex, color] = animations [i];
+                const barOneStyle = arrayBars[barOneIndex].style;
+                const barTwoStyle = arrayBars[barTwoIndex].style;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = color;
+                    barTwoStyle.backgroundColor = color;
+                }, i*SPEED_MS)
+            } else {
+                setTimeout(() => {
+                    const [barOneIndex, barOneValue, barTwoIndex, barTwoValue] = animations[i];
+                    const barOneStyle = arrayBars[barOneIndex].style;
+                    const barTwoStyle = arrayBars[barTwoIndex].style;
+                    barOneStyle.height = `${barTwoValue}px`;
+                    barTwoStyle.height = `${barOneValue}px`;
+                }, i*SPEED_MS);
+            }
+        }
     }
     insertionSort() {
         let arrayCopy1 = JSON.parse(JSON.stringify(this.state.array))
@@ -54,7 +74,6 @@ export default class SortingVisualizer extends React.Component {
             arrayCopy1.sort((a,b) => a-b)
         const sortedArray = sortingAlgorithms.mergeSort(arrayCopy2)
         console.log(this.compareSorts(arrayCopy1, sortedArray))
-        console.log(this.printArrays(sortedArray, []))
     }
     quickSort() {}
     compareSorts(array1, array2) {
@@ -83,7 +102,7 @@ export default class SortingVisualizer extends React.Component {
             <div className="app-container">
                 <div className="array-bar-container">
                     {array.map((element, index) => (
-                        <div className="array-bar" key={index} 
+                        <div className="array-bar" id={`bar-${element}`} key={index} 
                             style={{height: `${element}px`}}>
                         </div>
                     ))}

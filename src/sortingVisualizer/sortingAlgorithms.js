@@ -1,19 +1,33 @@
+var compareColor = 'aqua';
+var defaultColor = 'orange'
+
+const DELAY_SPEED_MS = 200;
+
 // SELECTION SORT
-export const selectionSort = (array) => {
+export const selectionSort = (array) => {   
+    const animations = [];
+    const auxArray = array.splice();
+
     for (let i=0; i < array.length; i++) {
         let min = i;
+
         for (let j = i+1; j < array.length; j++) {
             if (array[min] > array[j]) {
                 min = j;
             }
         }
+
+        animations.push([i, min, compareColor]); // Turns on color for bars to be compared
+        animations.push([i, array[i], min, array[min]]) // Swaps height (values) of bars
+        animations.push([i, min, defaultColor]); // Resets bars back to default color
+
         if (min !== i) {
             let tmp = array[i];
             array[i] = array[min];
             array[min] = tmp;
         }
     }
-    return array
+    return animations;
 }
 
 
