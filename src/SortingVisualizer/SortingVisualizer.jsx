@@ -4,6 +4,7 @@ import './SortingVisualizer.css';
 
 // Controls the speed of the animations
 const SPEED_MS = 70;
+const DEFAULT_COLOR = 'orange';
 
 export default class SortingVisualizer extends React.Component {
     constructor(props) {
@@ -21,16 +22,16 @@ export default class SortingVisualizer extends React.Component {
 
     resetArray() {
         const array = [];
-        for (let i=0; i < 100; i++) {
+        for (let i=0; i < 30; i++) {
             array.push(getRandomInt(5, 300));
         }
         this.setState({array});
-
+        resetColors();
     }
 
 
 
-    // Sorting Algorithms
+    // SORTING ALGORITHMS
     selectionSort() {
         let animations = sortingAlgorithms.selectionSort(this.state.array);
         for (let i=0; i < animations.length; i++) {
@@ -55,6 +56,7 @@ export default class SortingVisualizer extends React.Component {
             }
         }
     }
+
     insertionSort() {
         let animations = sortingAlgorithms.insertionSort(this.state.array);
         for (let i=0; i < animations.length; i++) {
@@ -92,6 +94,7 @@ export default class SortingVisualizer extends React.Component {
             }
         }
     }
+
     shellSort() {
         let arrayCopy1 = JSON.parse(JSON.stringify(this.state.array))
         let arrayCopy2 = JSON.parse(JSON.stringify(this.state.array))
@@ -99,6 +102,7 @@ export default class SortingVisualizer extends React.Component {
         const sortedArray = sortingAlgorithms.shellSort(arrayCopy2)
         console.log(this.compareSorts(arrayCopy1, sortedArray))
     }
+
     mergeSort() {
         let arrayCopy1 = JSON.parse(JSON.stringify(this.state.array))
         let arrayCopy2 = JSON.parse(JSON.stringify(this.state.array))
@@ -106,13 +110,14 @@ export default class SortingVisualizer extends React.Component {
         const sortedArray = sortingAlgorithms.mergeSort(arrayCopy2)
         console.log(this.compareSorts(arrayCopy1, sortedArray))
     }
+
     quickSort() {}
+
     compareSorts(array1, array2) {
         if (array1.length !== array2.length) {
             return false
         }
         for (let i=0; i < array1.length; i++) {
-            // console.log(`'comparing ${array1[i]} with ${array2[i]}.`)
             if (array1[i] !== array2[i]) {
                 return false
             }
@@ -134,7 +139,7 @@ export default class SortingVisualizer extends React.Component {
                 <div className="array-bar-container">
                     {array.map((element, index) => (
                         <div className="array-bar" id={`bar-${element}`} key={index} 
-                            style={{height: `${element}px`}}>
+                            style={{height: `${element}px`, backgroundColor: `${DEFAULT_COLOR}`}}>
                         </div>
                     ))}
                 </div>
@@ -151,9 +156,18 @@ export default class SortingVisualizer extends React.Component {
     }
 }
 
+
 // From https://www.w3schools.com/js/js_random.asp
 // Min and Max are both inclusive.
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) ) + min;
 }
 
+// Resets bar colors to default
+function resetColors() {
+    const arrayBars = document.getElementsByClassName('array-bar');
+    for (let i=0; i < arrayBars.length; i++) {
+        const barStyle = arrayBars[i].style;
+        barStyle.backgroundColor = DEFAULT_COLOR;
+    }
+}
