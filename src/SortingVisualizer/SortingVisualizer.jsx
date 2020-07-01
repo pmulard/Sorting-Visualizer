@@ -3,7 +3,7 @@ import * as sortingAlgorithms from './sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 // Controls the speed of the animations
-const SPEED_MS = 70;
+const SPEED_MS = 1000*2;
 const DEFAULT_COLOR = '#7f78d2';
 var sortIsRunning = false;
 
@@ -23,8 +23,9 @@ export default class SortingVisualizer extends React.Component {
 
     resetArray() {
         const array = [];
-        for (let i=0; i < 100; i++) {
+        for (let i=0; i < 5; i++) {
             array.push(getRandomInt(5, 600));
+            // array.push((i+1)*50)
         }
         this.setState({array});
         resetColors();
