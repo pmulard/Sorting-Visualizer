@@ -34,6 +34,7 @@ export default class SortingVisualizer extends React.Component {
     // SORTING ALGORITHMS
     selectionSort() {
         let animations = sortingAlgorithms.selectionSort(this.state.array);
+        const selectionSortSpeed = SPEED_MS;
 
         for (let i=0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
@@ -47,7 +48,7 @@ export default class SortingVisualizer extends React.Component {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = color;
                     barTwoStyle.backgroundColor = color;
-                }, i*SPEED_MS)
+                }, i*selectionSortSpeed);
             } else if (animationType === 'SWAP_VALUES') {
                 // For swapping height (values) of bars
                 setTimeout(() => {
@@ -56,7 +57,7 @@ export default class SortingVisualizer extends React.Component {
                     const barTwoStyle = arrayBars[barTwoIndex].style;
                     barOneStyle.height = `${barTwoValue}px`;
                     barTwoStyle.height = `${barOneValue}px`;
-                }, i*SPEED_MS);
+                }, i*selectionSortSpeed);
             } else { // Assertion: animationType === 'SORTED'
                 // For resetting bars back to default/sorted color
                 const [sortedBarIndex, otherBarIndex, defaultColor, sortedColor] = animations[i];
@@ -65,20 +66,21 @@ export default class SortingVisualizer extends React.Component {
                 setTimeout(() => {
                     otherBarStyle.backgroundColor = defaultColor;
                     sortedBarStyle.backgroundColor = sortedColor;
-                }, i*SPEED_MS)
+                }, i*selectionSortSpeed);
             }
         }
     }
 
     insertionSort() {
         let animations = sortingAlgorithms.insertionSort(this.state.array);
+        const insertionSortSpeed = SPEED_MS/5;
 
         for (let i=0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
             const animationType = animations[i][animations[i].length-1];
 
             if (animationType === 'COMPARING') {
-                // Changes color and values for bars as they shift up
+                // Changes color and values for bars as they shift
                 const [barOneIndex, barOneValue, barTwoIndex, barTwoValue, color] = animations[i];
                 const barOneStyle = arrayBars[barOneIndex].style;
                 const barTwoStyle = arrayBars[barTwoIndex].style;
@@ -87,7 +89,7 @@ export default class SortingVisualizer extends React.Component {
                     barOneStyle.height = `${barTwoValue}px`;
                     barTwoStyle.backgroundColor = color;
                     barTwoStyle.height = `${barOneValue}px`;
-                }, i*SPEED_MS/5);
+                }, i*insertionSortSpeed);
             } else if (animationType === 'DONE_COMPARING') {
                 // Resets color of bars back to default now that swap is completed
                 const [barOneIndex, barTwoIndex, color] = animations[i];
@@ -96,7 +98,7 @@ export default class SortingVisualizer extends React.Component {
                 setTimeout(() => {
                     barOneStyle.backgroundColor = color;
                     barTwoStyle.backgroundColor = color;
-                }, i*SPEED_MS/5);
+                }, i*insertionSortSpeed);
             } else { // Assertion: animationType === 'SORTED'
                 // Changes the height of the last bar in iteration to reflect
                 // unsorted element being put in it's correct place
@@ -104,17 +106,79 @@ export default class SortingVisualizer extends React.Component {
                 const finalBarStyle = arrayBars[finalBarIndex].style;
                 setTimeout(() => {
                     finalBarStyle.height = `${finalBarValue}px`;
-                }, i*SPEED_MS/5);
+                }, i*insertionSortSpeed);
             }
         }
     }
 
     shellSort() {
-        let arrayCopy1 = JSON.parse(JSON.stringify(this.state.array))
-        let arrayCopy2 = JSON.parse(JSON.stringify(this.state.array))
-            arrayCopy1.sort((a,b) => a-b)
-        const sortedArray = sortingAlgorithms.shellSort(arrayCopy2)
-        console.log(this.compareSorts(arrayCopy1, sortedArray))
+        let animations = sortingAlgorithms.shellSort(this.state.array);
+        const shellSortSpeed = SPEED_MS;
+
+        for (let i=0; i < animations.length; i++) {
+            const arrayBars = document.getElementsByClassName('array-bar');
+            const animationType = animations[i][animations[i].length-1];
+
+            if (animationType === 'COMPARING') {
+                // Changes color for all bars in the grouping for index iteration
+                // per each space iteration
+                const [barIndexArray, color] = animations[i];
+                setTimeout(() => {
+                    for (let bar=0; bar < barIndexArray.length; bar++) {
+                        const barIndex = barIndexArray[bar];
+                        const barStyle = arrayBars[barIndex].style;
+                        barStyle.backgroundColor = color;
+                    }
+                }, i*shellSortSpeed);
+            } else if (animationType === 'SHIFTING') {
+                // Changes color and values for bars as they shift
+                const [barOneIndex, barOneValue, barTwoIndex, barTwoValue, color] = animations[i];
+                const barOneStyle = arrayBars[barOneIndex].style;
+                const barTwoStyle = arrayBars[barTwoIndex].style;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = color;
+                    barOneStyle.height = `${barTwoValue}px`;
+                    barTwoStyle.backgroundColor = color;
+                    barTwoStyle.height = `${barOneValue}px`;
+                }, i*shellSortSpeed);
+            } else if (animationType === 'DONE_SHIFTING') {
+                // Resets color of bars back to compareColor now that the swap 
+                // is completed
+                const [barOneIndex, barTwoIndex, color] = animations[i];
+                const barOneStyle = arrayBars[barOneIndex].style;
+                const barTwoStyle = arrayBars[barTwoIndex].style;
+                setTimeout(() => {
+                    barOneStyle.backgroundColor = color;
+                    barTwoStyle.backgroundColor = color;
+                }, i*shellSortSpeed);
+            } else if (animationType === 'LAST_SHIFT') {
+                // Changes the height of the last bar in iteration to reflect
+                // unsorted element being put in it's correct place
+                const [finalBarIndex, finalBarValue] = animations[i];
+                const finalBarStyle = arrayBars[finalBarIndex].style;
+                setTimeout(() => {
+                    finalBarStyle.height = `${finalBarValue}px`;
+                }, i*shellSortSpeed);
+            } else if (animationType === 'SORTED') {
+                // Changes the color of bars to sorted when on the final pass
+                const [finalBarIndex, color] = animations[i];
+                const finalBarStyle = arrayBars[finalBarIndex].style;
+                setTimeout(() => {
+                    finalBarStyle.backgroundColor = color;
+                }, i*shellSortSpeed);
+            } else { // Assertion: animationType === 'DONE_COMPARING'
+                // Resets color for all bars in the grouping for index iteration
+                // per each space iteration
+                const [barIndexArray, color] = animations[i];
+                setTimeout(() => {
+                    for (let bar=0; bar < barIndexArray.length; bar++) {
+                        const barIndex = barIndexArray[bar];
+                        const barStyle = arrayBars[barIndex].style;
+                        barStyle.backgroundColor = color;
+                    }
+                }, i*shellSortSpeed);
+            }
+        }
     }
 
     mergeSort() {
