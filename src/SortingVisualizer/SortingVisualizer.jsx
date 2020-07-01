@@ -3,7 +3,7 @@ import * as sortingAlgorithms from './sortingAlgorithms.js';
 import './SortingVisualizer.css';
 
 // Controls the speed of the animations
-const SPEED_MS = 1000*2;
+const SPEED_MS = 75;
 const DEFAULT_COLOR = '#7f78d2';
 var sortIsRunning = false;
 
@@ -23,9 +23,9 @@ export default class SortingVisualizer extends React.Component {
 
     resetArray() {
         const array = [];
-        for (let i=0; i < 5; i++) {
+        for (let i=0; i < 100; i++) {
             array.push(getRandomInt(5, 600));
-            // array.push((i+1)*50)
+            // array.push(i+1)
         }
         this.setState({array});
         resetColors();
@@ -40,7 +40,7 @@ export default class SortingVisualizer extends React.Component {
         while (sortIsRunning === false) {
             sortIsRunning = true;
             let animations = sortingAlgorithms.selectionSort(this.state.array);
-            const selectionSortSpeed = SPEED_MS;
+            const selectionSortSpeed = SPEED_MS/2;
 
             for (let i=0; i < animations.length; i++) {
                 const arrayBars = document.getElementsByClassName('array-bar');
@@ -82,7 +82,7 @@ export default class SortingVisualizer extends React.Component {
         while (sortIsRunning === false) {
             sortIsRunning = true;
             let animations = sortingAlgorithms.insertionSort(this.state.array);
-            const insertionSortSpeed = SPEED_MS/5;
+            const insertionSortSpeed = SPEED_MS/20;
 
             for (let i=0; i < animations.length; i++) {
                 const arrayBars = document.getElementsByClassName('array-bar');
@@ -98,7 +98,7 @@ export default class SortingVisualizer extends React.Component {
                         barOneStyle.height = `${barTwoValue}px`;
                         barTwoStyle.backgroundColor = color;
                         barTwoStyle.height = `${barOneValue}px`;
-                    }, i*insertionSortSpeed);
+                    }, (i-1)*insertionSortSpeed); // Prevents flashing affect in visual by removing delay
                 } else if (animationType === 'DONE_COMPARING') {
                     // Resets color of bars back to default now that swap is completed
                     const [barOneIndex, barTwoIndex, color] = animations[i];
@@ -125,7 +125,7 @@ export default class SortingVisualizer extends React.Component {
         while (sortIsRunning === false) {
             sortIsRunning = true;
             let animations = sortingAlgorithms.shellSort(this.state.array);
-            const shellSortSpeed = SPEED_MS/3;
+            const shellSortSpeed = SPEED_MS/6;
 
             for (let i=0; i < animations.length; i++) {
                 const arrayBars = document.getElementsByClassName('array-bar');
@@ -141,7 +141,7 @@ export default class SortingVisualizer extends React.Component {
                             const barStyle = arrayBars[barIndex].style;
                             barStyle.backgroundColor = color;
                         }
-                    }, i*shellSortSpeed);
+                    }, (i-1)*shellSortSpeed); // Prevents flashing affect in visual by removing delay
                 } else if (animationType === 'SHIFTING') {
                     // Changes color and values for bars as they shift
                     const [barOneIndex, barOneValue, barTwoIndex, barTwoValue, color] = animations[i];
@@ -152,7 +152,7 @@ export default class SortingVisualizer extends React.Component {
                         barOneStyle.height = `${barTwoValue}px`;
                         barTwoStyle.backgroundColor = color;
                         barTwoStyle.height = `${barOneValue}px`;
-                    }, i*shellSortSpeed);
+                    }, (i-1)*shellSortSpeed); // Prevents flashing affect in visual by removing delay
                 } else if (animationType === 'DONE_SHIFTING') {
                     // Resets color of bars back to compareColor now that the swap 
                     // is completed

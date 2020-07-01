@@ -1,5 +1,5 @@
 var defaultColor = '#7f78d2';
-var sortedColor = '#481380';
+var sortedColor = '#613885';
 var compareColor = '#3fc5f0';
 var secondCompareColor = '#83b87b';
 
