@@ -15,11 +15,11 @@ export const selectionSort = (array) => {
             }
         }
         // Turns on color for bars to be compared
-        animations.push([i, min, compareColor]);
+        animations.push([i, min, compareColor, 'COMPARING']);
         // Swaps height (values) of bars
-        animations.push([i, array[i], min, array[min]]); 
-        // Resets bars back to default color
-        animations.push([i, min, defaultColor]); 
+        animations.push([i, array[i], min, array[min], 'SWAP_VALUES']); 
+        // Resets bars back to default/sorted color
+        animations.push([i, min, defaultColor, sortedColor, 'SORTED']); 
 
         if (min !== i) {
             let tmp = array[i];
@@ -53,7 +53,7 @@ export const insertionSort = (array, i=1) => {
         array[index+1] = unsortedElement;
         // Changes the height of the last bar in iteration to reflect
         // unsorted element being put in it's correct place
-        animations.push([index+1, array[index+1], sortedColor,'SORTED'])
+        animations.push([index+1, array[index+1],'SORTED'])
     }
     return animations;
 }
