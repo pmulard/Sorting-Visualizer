@@ -1,7 +1,7 @@
-var compareColor = 'aqua';
-var defaultColor = 'orange';
-var sortedColor = 'purple';
-var secondCompareColor = 'yellowgreen';
+var defaultColor = '#7f78d2';
+var sortedColor = '#481380';
+var compareColor = '#f6da63';
+var secondCompareColor = '#399fe3';
 
 // SELECTION SORT
 export const selectionSort = (array) => {   
@@ -132,24 +132,25 @@ export const shellSort = (array) => {
 
 // MERGE SORT
 export const mergeSort = (array) => {
+    var mergeSortAnimations = [];
+    
     if (array.length < 2) {
-        return array
+        return mergeSortAnimations;
     }
-    var mid = Math.floor(array.length/2)
-    var left = mergeSort(array.slice(0, mid))
-    var right = mergeSort(array.slice(mid)) 
-
-    return mergeSortMerge(left, right)
-}
-
-export const mergeSortMerge = (left, right) => {
-    var sortedArray = []
-    while (left.length > 0 && right.length > 0) {
-        if (left[0] < right[0]) {
-            sortedArray.push(left.shift())
-        } else {
-            sortedArray.push(right.shift())
+    var mid = Math.floor(array.length/2);
+    var left = mergeSort(array.slice(0, mid));
+    var right = mergeSort(array.slice(mid));
+    
+    const mergeSortMerge = (left, right) => {
+        let sortedArray = [];
+        while (left.length > 0 && right.length > 0) {
+            if (left[0] < right[0]) {
+                sortedArray.push(left.shift());
+            } else {
+                sortedArray.push(right.shift());
+            }
         }
+        return sortedArray.concat(left.length ? left : right);
     }
-    return sortedArray.concat(left.length ? left : right)
+    return mergeSortMerge(left, right);
 }

@@ -4,7 +4,7 @@ import './SortingVisualizer.css';
 
 // Controls the speed of the animations
 const SPEED_MS = 70;
-const DEFAULT_COLOR = 'orange';
+const DEFAULT_COLOR = '#7f78d2';
 var sortIsRunning = false;
 
 export default class SortingVisualizer extends React.Component {
@@ -34,6 +34,7 @@ export default class SortingVisualizer extends React.Component {
 
 
     // SORTING ALGORITHMS
+
     selectionSort() {
         while (sortIsRunning === false) {
             sortIsRunning = true;
@@ -43,7 +44,7 @@ export default class SortingVisualizer extends React.Component {
             for (let i=0; i < animations.length; i++) {
                 const arrayBars = document.getElementsByClassName('array-bar');
                 const animationType = animations[i][animations[i].length-1];
-                
+            
                 if (animationType === 'COMPARING') {
                     // For turning on color for bars to be compared
                     const [barOneIndex, barTwoIndex, color] = animations[i];
