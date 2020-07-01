@@ -22,7 +22,7 @@ export default class SortingVisualizer extends React.Component {
 
     resetArray() {
         const array = [];
-        for (let i=0; i < 30; i++) {
+        for (let i=0; i < 100; i++) {
             array.push(getRandomInt(5, 300));
         }
         this.setState({array});
@@ -113,7 +113,7 @@ export default class SortingVisualizer extends React.Component {
 
     shellSort() {
         let animations = sortingAlgorithms.shellSort(this.state.array);
-        const shellSortSpeed = SPEED_MS;
+        const shellSortSpeed = SPEED_MS/3;
 
         for (let i=0; i < animations.length; i++) {
             const arrayBars = document.getElementsByClassName('array-bar');
