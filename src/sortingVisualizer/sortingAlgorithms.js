@@ -116,7 +116,7 @@ export const shellSort = (array) => {
                 // Changes the height of the last bar in iteration to reflect
                 // unsorted element being put in it's correct place
                 animations.push([index+space, array[index+space], 'LAST_SHIFT'])
-                // Changes the color of the last bar to be sorted when on the 
+                // Changes the color of the last bar to sorted when on the 
                 // final pass
                 if (space === 1) {
                     // Changes color to sorted if the first element is properly sorted
@@ -129,8 +129,8 @@ export const shellSort = (array) => {
             }
             
             // Resets each space iteration to default color unless it's
-            // the last iteration (space=1)
-            if (barIndexArray.length !== array.length) {
+            // the last iteration
+            if (space !== 1) {
                 animations.push([barIndexArray, defaultColor, 'DONE_COMPARING']);
             }
         }
@@ -143,25 +143,106 @@ export const shellSort = (array) => {
 
 // MERGE SORT
 export const mergeSort = (array) => {
-    var mergeSortAnimations = [];
-    
-    if (array.length < 2) {
-        return mergeSortAnimations;
+    var auxArray = array.splice();
+    var animations = [];
+    mergeSortDivide(array, 0, array.length-1, auxArray, animations);
+    return animations;
+}
+
+const mergeSortDivide = (array, startIndex, endIndex, auxArray, animations) => {
+    if (startIndex === endIndex) {
+        return;
     }
-    var mid = Math.floor(array.length/2);
-    var left = mergeSort(array.slice(0, mid));
-    var right = mergeSort(array.slice(mid));
+    var midIndex = Math.floor((startIndex + endIndex)/2);
+    mergeSortDivide(auxArray, startIndex, midIndex, array, animations);
+    mergeSortDivide(auxArray, midIndex+1, endIndex, array, animations);
+
+    return mergeSortMerge(array, startIndex, midIndex, endIndex, auxArray, animations);
+}
+
+const mergeSortMerge = (array, startIndex, midIndex, endIndex, auxArray, animations) => {
+    let i = startIndex;
+    let j = midIndex;
+    let k = endIndex;
+    animations.push([startIndex, endIndex, secondCompareColor, 'GROUPING_ARRAY'])
     
-    const mergeSortMerge = (left, right) => {
-        let sortedArray = [];
-        while (left.length > 0 && right.length > 0) {
-            if (left[0] < right[0]) {
-                sortedArray.push(left.shift());
-            } else {
-                sortedArray.push(right.shift());
-            }
+    while (i <= midIndex && j <= endIndex) {
+        animations.push([i, j, compareColor, 'COMPARING']);
+        
+        if (auxArray[i] <= auxArray[j]) {
+            array[k] = array[i];
+            animations.push([k, array[i], 'CHANGING_VALUE']);
+            animations.push([i, j, secondCompareColor, 'DONE_COMPARING']);
+            i++;
+        } else {
+            // Assertion: auxArray[i] > auxArray[j]
+            array[k] = array[j];
+            animations.push([k, array[j], 'CHANGING_VALUE']);
+            animations.push([i, j, secondCompareColor, 'DONE_COMPARING']);
+            j++;
         }
-        return sortedArray.concat(left.length ? left : right);
     }
-    return mergeSortMerge(left, right);
+    // while (i <= midIndex) {
+    //     animations.push([i, j, compareColor, 'COMPARING']);
+    //     array[k] = array[i];
+    //     animations.push([k, array[i], 'CHANGING_VALUE']);
+    //     animations.push([i, j, secondCompareColor, 'DONE_COMPARING']);
+    //     i++;
+    // }
+    // while (j <= endIndex) {
+    //     animations.push([i, j, compareColor, 'COMPARING']);
+    //     array[k] = array[j];
+    //     animations.push([k, array[j], 'CHANGING_VALUE']);
+    //     animations.push([i, j, secondCompareColor, 'DONE_COMPARING']);
+    //     j++;
+    // }
+
+
+
+    
+    // while (i <= midIndex && j <= endIndex) {
+    //     // These are the values that we're comparing; we push them once
+    //     // to change their color.
+    //     animations.push([i, j, compareColor, 'COMPARING']);
+    //     // These are the values that we're comparing; we push them a second
+    //     // time to revert their color.
+    //     animations.push([i, j, compareColor, 'DONE_COMPARING']);
+    //     if (auxArray[i] <= auxArray[j]) {
+    //       // We overwrite the value at index k in the original array with the
+    //       // value at index i in the auxiliary array.
+    //       animations.push([k, auxArray[i], 'CHANGING_VALUE']);
+    //       array[k++] = auxArray[i++];
+    //     } else {
+    //       // We overwrite the value at index k in the original array with the
+    //       // value at index j in the auxiliary array.
+    //       animations.push([k, auxArray[j], 'CHANGING_VALUE']);
+    //       array[k++] = auxArray[j++];
+    //     }
+    // }
+    // while (i <= midIndex) {
+    //     // These are the values that we're comparing; we push them once
+    //     // to change their color.
+    //     animations.push([i, i, compareColor, 'COMPARING']);
+    //     // These are the values that we're comparing; we push them a second
+    //     // time to revert their color.
+    //     animations.push([i, i, compareColor, 'DONE_COMPARING']);
+    //     // We overwrite the value at index k in the original array with the
+    //     // value at index i in the auxiliary array.
+    //     animations.push([k, auxArray[i], 'CHANGING_VALUE']);
+    //     array[k++] = auxArray[i++];
+    //   }
+    //   while (j <= endIndex) {
+    //     // These are the values that we're comparing; we push them once
+    //     // to change their color.
+    //     animations.push([j, j, compareColor, 'COMPARING']);
+    //     // These are the values that we're comparing; we push them a second
+    //     // time to revert their color.
+    //     animations.push([j, j, compareColor, 'DONE_COMPARING']);
+    //     // We overwrite the value at index k in the original array with the
+    //     // value at index j in the auxiliary array.
+    //     animations.push([k, auxArray[j], 'CHANGING_VALUE']);
+    //     array[k++] = auxArray[j++];
+    //   }
+
+    animations.push([startIndex, endIndex, defaultColor, 'DONE_GROUPING_ARRAY']);
 }

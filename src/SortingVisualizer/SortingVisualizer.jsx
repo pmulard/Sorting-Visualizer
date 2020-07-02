@@ -195,12 +195,58 @@ export default class SortingVisualizer extends React.Component {
     }
 
     mergeSort() {
-        let arrayCopy1 = JSON.parse(JSON.stringify(this.state.array))
-        let arrayCopy2 = JSON.parse(JSON.stringify(this.state.array))
-            arrayCopy1.sort((a,b) => a-b)
-        const sortedArray = sortingAlgorithms.mergeSort(arrayCopy2)
-        console.log(this.compareSorts(arrayCopy1, sortedArray))
+        while (sortIsRunning === false) {
+            sortIsRunning = true;
+            let animations = sortingAlgorithms.mergeSort(this.state.array);
+            const mergeSortSpeed = SPEED_MS/6;
+
+            for (let i=0; i < animations.length; i++) {
+                const arrayBars = document.getElementsByClassName('array-bar');
+                const animationType = animations[i][animations[i].length-1];
+
+                if (animationType === 'GROUPING_ARRAY') {
+                    const [start, end, color] = animations[i];
+                    setTimeout(() => {
+                        for (let bar=start; bar < end; bar++) {
+                            const barStyle = arrayBars[bar].style;
+                            barStyle.backgroundColor = color;
+                        }
+                    }, (i-1)*mergeSortSpeed);
+                } else if (animationType === 'COMPARING') {
+                    const [barOneIndex, barTwoIndex, color] = animations[i];
+                    const barOneStyle = arrayBars[barOneIndex].style;
+                    const barTwoStyle = arrayBars[barTwoIndex].style;
+                    setTimeout(() => {
+                        barOneStyle.backgroundColor = color;
+                        barTwoStyle.backgroundColor = color;
+                    }, (i-1)*mergeSortSpeed);
+                } else if (animationType === 'CHANGING VALUE') {
+                    const [barIndex, barValue] = animations[i];
+                    const barStyle = arrayBars[barIndex].style;
+                    setTimeout(() => {
+                        barStyle.height = `${barValue}px`;
+                    }, i*mergeSortSpeed);
+                } else if (animationType === 'DONE_COMPARING') {
+                    const [barOneIndex, barTwoIndex, color] = animations[i];
+                    const barOneStyle = arrayBars[barOneIndex].style;
+                    const barTwoStyle = arrayBars[barTwoIndex].style;
+                    setTimeout(() => {
+                        barOneStyle.backgroundColor = color;
+                        barTwoStyle.backgroundColor = color;
+                    }, i*mergeSortSpeed);
+                } else if (animationType === 'DONE_GROUPING') {
+                    const [start, end, color] = animations[i];
+                    setTimeout(() => {
+                        for (let bar=start; bar < end; bar++) {
+                            const barStyle = arrayBars[bar].style;
+                            barStyle.backgroundColor = color;
+                        }
+                    }, i*mergeSortSpeed);
+                }
+            }
+        }
     }
+    
 
     quickSort() {}
 
@@ -240,7 +286,6 @@ export default class SortingVisualizer extends React.Component {
                     <button onClick={() => this.insertionSort()}>Insertion Sort</button>
                     <button onClick={() => this.shellSort()}>Shell Sort</button>
                     <button onClick={() => this.mergeSort()}>Merge Sort</button>
-                    <button onClick={() => this.quickSort()}>Quick Sort</button>
                 </div>
             </div>
         );
