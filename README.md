@@ -1,3 +1,11 @@
+# Sorting Algorithm Visualizer
+
+Supports selection, insertion and shell sorts. Merge sort is in progress.
+
+![Sample Test](https://github.com/pmulard/Sorting-Visualizer/blob/master/public/sampleTest.gif)
+
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
